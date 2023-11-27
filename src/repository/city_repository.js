@@ -1,3 +1,4 @@
+const {Op}  =  require('sequelize')
 const {City} = require("../models/index")
 
 class CityRepository{
@@ -6,9 +7,9 @@ async createCity({name}){
     try{
         const city = await City.create(
             {
-                name : name,
+                name
             }
-        )
+        );
        return city;     
     }
     catch(error){
@@ -17,13 +18,14 @@ async createCity({name}){
     }
     }
 
-    async  deleteCity({cityid}){
+    async deleteCity(cityid){
         try{    
         City.destroy({
             where :{
                 id : cityid
             }
         });
+        return true;
         }
         catch(error){
             console.log("there is an error while deleting  a city")
@@ -32,7 +34,7 @@ async createCity({name}){
     }
 
 
-    async getCity({cityid})
+    async getCity(cityid)
     {
         try{
             const city = await City.findOne({
@@ -48,14 +50,43 @@ async createCity({name}){
         }
     }
 
-    async updateCity({cityid, data}){     
+     async getAllCities(filter){
         try{
-            const city = City.update({
-                where :{
-                    id : cityid
-                }
-            })               
+            if(filter.name)
+            {
+                const cities = await City.findAll({
+                    where:{
+                        name: {
+                            [Op.startsWith] : filter.name
+                        }
+                       
+                    }
+                });
+                return cities; 
+         
+            }    
+            const cities = await City.findAll();
+            return cities;       
+        }
+        catch(error){
+           throw{error};   
+        }
+    }
+
+    async updateCity(cityid, data){     
+        try{
+            // const city = City.update( data, {
+            //     where :{
+            //         id : cityid
+            //     }
+            // })      
+            // return data;
+         
+            const city = await City.findByPk(cityid);
+            city.name = data.name;
+            await city.save();
             return city;
+
         }
         catch(error)
         {

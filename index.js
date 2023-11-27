@@ -1,21 +1,23 @@
 const express = require('express');
-const {PORT}  = require('./src/config/serverconfig')
-const bodyParcer = require('body-parser');
-const bodyParser = require('body-parser');
-
-const setupAndStartServer = async()=>{
 const app = express();
+const { PORT } = require('./src/config/serverconfig');
+const bodyParser = require('body-parser');
+const Apirouter = require('./src/routes/index');
 
 
-app.listen(PORT , ()=>{
 
-    app.use(bodyParser.json());
-    app.use(bodyParcer.urlencoded({extended : true}));
+const setupAndStartServer = () => {
     
-    console.log(`app is listening in ${PORT} `);
-});
+app.use(express.json()); 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-}
+  app.use('/api', Apirouter);
 
+  app.listen(PORT, () => {
+    console.log(`app is listening in ${PORT}`);
+  });
+};
 
 setupAndStartServer();
+

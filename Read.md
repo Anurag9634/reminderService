@@ -38,3 +38,24 @@
    1. A flight belongs to an airplane but ane airplane can be used in multiple flights
    2. A city has many irports but one airportds belongs to a city
    3. one airport can have many flighs , but a flight belong t  airports
+
+
+   ## migration file
+    
+    1. whatever the changes the another person had done in his db when you would run this command
+      
+      npx sequelize db:migrate 
+
+    2.   those changes would apploed in your db as:well 
+
+    3.  and these changes has occurs in db level not js level means if you had applied allownNull : false then ypu can push element open the db aswell.
+
+    ## to drop the migration 
+    npx sequelize db:migrate:undo
+
+    ## 
+
+
+
+
+
